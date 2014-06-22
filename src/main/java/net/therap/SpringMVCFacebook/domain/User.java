@@ -31,16 +31,16 @@ public class User {
     @Embedded
     private UserDetails userDetails;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "FRIENDSHIP",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "FRIEND_ID"))
     private List<User> friends;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<Post> post;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public void setUserId(long userId) {
@@ -97,5 +97,18 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", userDetails=" + userDetails +
+                ", friends=" + friends +
+                ", post=" + post +
+                ", comments=" + comments +
+                '}';
     }
 }
