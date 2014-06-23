@@ -9,8 +9,10 @@
     <title><decorator:title/></title>
 
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style.css" />" media="all">
-
-
+    <script src="<c:url value="/resources/js/bootstrap.js"/> "></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js"/> "></script>
+    <script src="<c:url value="/resources/js/jquery-1.10.2.js"/> "></script>
+    <script src="<c:url value="/resources/js/jquery-ui-1.10.4.custom.js"/> "></script>
     <decorator:head/>
 </head>
 <body>

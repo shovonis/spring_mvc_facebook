@@ -17,11 +17,11 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID",nullable = false)
+    @Column(name = "USER_ID", nullable = false)
     private long userId;
 
     @NotEmpty
-    @Column(name = "PASSWORD",nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @NotEmpty
@@ -31,16 +31,17 @@ public class User {
     @Embedded
     private UserDetails userDetails;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name = "FRIENDSHIP",
-            joinColumns = @JoinColumn(name = "USER_ID"),
+            joinColumns = @JoinColumn(name = "USER_ID"  ),
             inverseJoinColumns = @JoinColumn(name = "FRIEND_ID"))
     private List<User> friends;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Post> post;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     public void setUserId(long userId) {
@@ -111,4 +112,5 @@ public class User {
                 ", comments=" + comments +
                 '}';
     }
+
 }

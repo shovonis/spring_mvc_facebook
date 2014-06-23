@@ -26,4 +26,6 @@ public interface UserDao {
 
     public Comment getUserComment(long userId);
 
+    public List<User> getFriendList(long userId);
+
 }

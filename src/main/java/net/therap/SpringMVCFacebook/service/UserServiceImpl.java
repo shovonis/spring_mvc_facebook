@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author rifatul.islam
  * @since 6/19/14.
@@ -35,5 +37,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         userDao.updateUser(user);
+    }
+
+    @Override
+    public User getUserById(long userId) {
+        return userDao.getUserById(userId);
+    }
+
+    @Override
+    public List<User> getFriendList(long userId) {
+        return userDao.getFriendList(userId);
     }
 }

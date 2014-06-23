@@ -3,6 +3,7 @@ package net.therap.SpringMVCFacebook.domain;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Lob;
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.sql.Date;
  */
 
 @Embeddable
-public class UserDetails {
+public class UserDetails implements Serializable{
 
     @Column(name = "FIRSTNAME")
     private String firstName;

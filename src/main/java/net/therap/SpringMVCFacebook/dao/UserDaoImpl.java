@@ -29,7 +29,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(long userId) {
-        return null;
+        return entityManager.find(User.class, userId);
     }
 
     @Override
@@ -79,5 +79,17 @@ public class UserDaoImpl implements UserDao {
         query.setParameter("userId", userId);
         Comment comment = query.getSingleResult();
         return comment;
+    }
+
+    @Override
+    public List<User> getFriendList(long userId) {
+        log.debug("Getting Friend Lists");
+        TypedQuery<User> query = entityManager.createQuery("SELECT friend FROM User user " +
+                "JOIN user.friends friend WHERE user.userId=:userId", User.class);
+
+        query.setParameter("userId", userId);
+        List<User> friendList = query.getResultList();
+        log.debug("Friend List Returned");
+        return friendList;
     }
 }

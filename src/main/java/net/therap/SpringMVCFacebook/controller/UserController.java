@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author rifatul.islam
@@ -28,25 +29,48 @@ public class UserController {
     @Qualifier("userService")
     private UserService userService;
 
+    private User user;
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView showUserProfile(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-//        System.out.println("User in profile " + user);
+    @RequestMapping(value = "/profile/{userId}", method = RequestMethod.GET)
+    public ModelAndView showUserProfile(@PathVariable long userId) {
+        user = userService.getUserById(userId);
         return new ModelAndView("user_profile", "profile", user);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String updateUser(@ModelAttribute("profile") User user, BindingResult result, HttpSession session) {
-        if (result.hasErrors()) {
-            return "redirect:/profile";
-        }
+    public String updateUser(@ModelAttribute("profile") User user, BindingResult result,
+                             @RequestParam(value = "profilePicture") MultipartFile image, HttpSession session) {
+
         User userFromSession = (User) session.getAttribute("user");
         user.setUserId(userFromSession.getUserId());
-        System.out.println("user id in update " + user.getUserId());
-        System.out.println("user email in update " + user.getEmail());
-        System.out.println("user first name in update " + user.getUserDetails().getFirstName());
+
+        if (result.hasErrors()) {
+            return "redirect:/profile/" + userFromSession.getUserId();
+        }
+
+
+        try {
+            byte[] proPic = image.getBytes();
+            user.getUserDetails().setProfilePicture(proPic);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         userService.updateUser(user);
         return "redirect:/home";
+    }
+
+    @RequestMapping(value = "/getFriends/{userId}", method = RequestMethod.GET)
+    public String getFriends(@PathVariable long userId) {
+        List<User> friendLists = userService.getFriendList(userId);
+        for (User friendList : friendLists) {
+            System.out.println(friendList.getUserId());
+        }
+        return "redirect:/home";
+    }
+
+    @RequestMapping("/getPicture")
+    @ResponseBody
+    public byte[] getProfilePicture() {
+        return user.getUserDetails().getProfilePicture();
     }
 }

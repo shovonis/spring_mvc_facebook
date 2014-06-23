@@ -24,8 +24,8 @@
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
             <c:if test="${sessionScope.user ne null}">
-                <li><a href="home">Home</a></li>
-                <li><a href="profile">Profile</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/profile/${sessionScope.user.userId}">Profile</a></li>
             </c:if>
         </ul>
         <form class="navbar-form navbar-left">
@@ -34,7 +34,8 @@
         <ul class="nav navbar-nav navbar-right">
             <c:if test="${sessionScope.user ne null}">
                 <li><a href="#">Notification</a></li>
-                <li><a href="logout">Logout</a></li>
+                <li><a href="/getFriends/${sessionScope.user.userId}">Friends</a></li>
+                <li><a href="/logout">Logout</a></li>
             </c:if>
         </ul>
     </div>
