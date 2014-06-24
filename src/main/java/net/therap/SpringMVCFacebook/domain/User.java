@@ -4,7 +4,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author rifatul.islam
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "USER")
 @Scope("session")
-public class User {
+public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID", nullable = false)
@@ -32,17 +33,17 @@ public class User {
     private UserDetails userDetails;
 
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "FRIENDSHIP",
-            joinColumns = @JoinColumn(name = "USER_ID"  ),
+            joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "FRIEND_ID"))
-    private List<User> friends;
+    private Set<User> friends;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Post> post;
+    private Set<Post> post;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     public void setUserId(long userId) {
         this.userId = userId;
@@ -76,41 +77,57 @@ public class User {
         this.userDetails = userDetails;
     }
 
-    public List<User> getFriends() {
+    public Set<User> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(Set<User> friends) {
         this.friends = friends;
     }
 
-    public List<Post> getPost() {
+    public Set<Post> getPost() {
         return post;
     }
 
-    public void setPost(List<Post> post) {
+    public void setPost(Set<Post> post) {
         this.post = post;
     }
 
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
 
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "userId=" + userId +
+//                ", password='" + password + '\'' +
+//                ", email='" + email + '\'' +
+//                ", userDetails=" + userDetails +
+//                ", friends=" + friends +
+//                ", post=" + post +
+//                ", comments=" + comments +
+//                '}';
+//    }
+
     @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", userDetails=" + userDetails +
-                ", friends=" + friends +
-                ", post=" + post +
-                ", comments=" + comments +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (userId != user.userId) return false;
+
+        return true;
     }
 
+    @Override
+    public int hashCode() {
+        return (int) (userId ^ (userId >>> 32));
+    }
 }

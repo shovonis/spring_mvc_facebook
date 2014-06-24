@@ -29,7 +29,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(long userId) {
-        return entityManager.find(User.class, userId);
+        String qu = "SELECT user FROM User user " +
+                "LEFT JOIN FETCH user.friends LEFT JOIN FETCH user.comments LEFT JOIN FETCH user.post " +
+                "WHERE user.userId=:userId";
+
+        TypedQuery<User> query = entityManager.createQuery(qu, User.class);
+
+        query.setParameter("userId", userId);
+        User user = query.getSingleResult();
+        return user;
     }
 
     @Override
@@ -52,6 +60,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUser(User user) {
         log.info("UPDATED User " + user.getUserId());
+
+//        User us = entityManager.find(User.class, user.getUserId());
+//        us.getFriends();
+
         entityManager.merge(user);
         entityManager.flush();
     }
@@ -59,9 +71,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserByUserNamePassword(String email, String password) {
         User user = null;
+
+        String qu = "SELECT user FROM User user " +
+                "LEFT JOIN FETCH user.friends LEFT JOIN FETCH user.comments LEFT JOIN FETCH user.post" +
+                " WHERE user.email=:email AND user.password=:password";
         try {
-            TypedQuery<User> query = entityManager.createQuery("SELECT user FROM User user " +
-                    "WHERE user.email=:email AND user.password=:password", User.class);
+            TypedQuery<User> query = entityManager.createQuery(qu, User.class);
+
             query.setParameter("email", email);
             query.setParameter("password", password);
             user = query.getSingleResult();

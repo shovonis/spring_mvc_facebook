@@ -6,15 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author rifatul.islam
@@ -38,24 +42,28 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String updateUser(@ModelAttribute("profile") User user, BindingResult result,
-                             @RequestParam(value = "profilePicture") MultipartFile image, HttpSession session) {
+    public String updateUser(@Valid @ModelAttribute("profile") User userProfile, BindingResult result,
+                             @RequestParam(value = "profilePicture") MultipartFile image) {
 
-        User userFromSession = (User) session.getAttribute("user");
-        user.setUserId(userFromSession.getUserId());
+        userProfile.setUserId(user.getUserId());
+
+
+        // This is needed because command object cannot bind list from form;
+        userProfile.setFriends(user.getFriends());
+
 
         if (result.hasErrors()) {
-            return "redirect:/profile/" + userFromSession.getUserId();
+            log.debug("Entity User binding error on updating userProfile profile");
+            return "redirect:/profile/" + user.getUserId();
         }
-
-
         try {
             byte[] proPic = image.getBytes();
-            user.getUserDetails().setProfilePicture(proPic);
+            userProfile.getUserDetails().setProfilePicture(proPic);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        userService.updateUser(user);
+        userProfile.getFriends();
+        userService.updateUser(userProfile);
         return "redirect:/home";
     }
 
@@ -73,4 +81,6 @@ public class UserController {
     public byte[] getProfilePicture() {
         return user.getUserDetails().getProfilePicture();
     }
+
+
 }
