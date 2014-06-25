@@ -1,6 +1,6 @@
 package net.therap.SpringMVCFacebook.service;
 
-import net.therap.SpringMVCFacebook.domain.User;
+import net.therap.SpringMVCFacebook.domain.user.User;
 
 /**
  * @author rifatul.islam

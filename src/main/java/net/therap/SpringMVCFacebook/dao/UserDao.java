@@ -1,7 +1,7 @@
 package net.therap.SpringMVCFacebook.dao;
 
-import net.therap.SpringMVCFacebook.domain.Comment;
-import net.therap.SpringMVCFacebook.domain.User;
+import net.therap.SpringMVCFacebook.domain.user.Comment;
+import net.therap.SpringMVCFacebook.domain.user.User;
 
 import java.util.List;
 

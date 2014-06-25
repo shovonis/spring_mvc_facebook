@@ -22,7 +22,7 @@
 
             <div class="panel-body">
                 <div class="col-lg-6">
-                    <form:form class="form-horizontal" action="/update" modelAttribute="profile" method="post"
+                    <form:form class="form-horizontal" action="/update" commandName="profile" method="post"
                                enctype="multipart/form-data">
                         <fieldset>
                             <div class="form-group">
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
 
-                            <form:hidden path="friends" id="friends"/>
+                            <%--<form:hidden path="friends" id="friends"/>--%>
                                 <%--<form:hidden path="comments"/>--%>
                                 <%--<form:hidden path="post"/>--%>
 
