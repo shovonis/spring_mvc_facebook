@@ -42,11 +42,7 @@ public class UserController {
                              @RequestParam(value = "profilePicture") MultipartFile image) {
 
         userProfile.setUserId(user.getUserId());
-
-
-        // This is needed because command object cannot bind list from form;
         userProfile.setFriends(user.getFriends());
-
 
         if (result.hasErrors()) {
             log.debug("Entity User binding error on updating userProfile profile");
@@ -78,6 +74,4 @@ public class UserController {
     public byte[] getProfilePicture() {
         return user.getUserDetails().getProfilePicture();
     }
-
-
 }
