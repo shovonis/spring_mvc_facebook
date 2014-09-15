@@ -19,7 +19,7 @@ HOW TO RUN :
 - Show the tomcat home directory.
 - Create a database name  'mvc_facebook' in your localhost
 - JNDI DataSource Setup: 
-    - Add this line inside &lt context &gt &lt/context&gt in tomcat/conf/context.xml
+    - Add this line inside ```xml <context> </context> ``` in tomcat/conf/context.xml
     
      ```xml
       <ResourceLink name="jdbc/facebook"
@@ -28,7 +28,7 @@ HOW TO RUN :
                       type="javax.sql.DataSource" />
                       
       ```               
-    - Add the following line inside <GlobalNamingResources> </GlobalNamingResources> in tomcat/conf/server.xml
+    - Add the following line inside ```xml <GlobalNamingResources> </GlobalNamingResources> ``` in tomcat/conf/server.xml
      ```xml
       <Resource name="jdbc/MyFB"
           global="jdbc/MyFB"
