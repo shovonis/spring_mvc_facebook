@@ -20,14 +20,18 @@ HOW TO RUN :
 - Create a database name  'mvc_facebook' in your localhost
 - JNDI DataSource Setup: 
     - Add this line inside <context> </context> in tomcat/conf/context.xml
+    
      ```xml
+      
       <ResourceLink name="jdbc/facebook"
                       global="jdbc/MyFB"
                       auth="Container"
                       type="javax.sql.DataSource" />
-     ```               
+                      
+      ```               
     - Add the following line inside <GlobalNamingResources> </GlobalNamingResources> in tomcat/conf/server.xml
      ```xml
+      
       <Resource name="jdbc/MyFB"
           global="jdbc/MyFB"
           auth="Container"
@@ -40,6 +44,7 @@ HOW TO RUN :
           maxIdle="20"
           minIdle="5"
           maxWait="10000"/>
+          
      ```  
                        
 - Build with Maven 
