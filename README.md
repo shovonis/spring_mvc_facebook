@@ -22,7 +22,6 @@ HOW TO RUN :
     - Add this line inside <context> </context> in tomcat/conf/context.xml
     
      ```xml
-      
       <ResourceLink name="jdbc/facebook"
                       global="jdbc/MyFB"
                       auth="Container"
@@ -31,7 +30,6 @@ HOW TO RUN :
       ```               
     - Add the following line inside <GlobalNamingResources> </GlobalNamingResources> in tomcat/conf/server.xml
      ```xml
-      
       <Resource name="jdbc/MyFB"
           global="jdbc/MyFB"
           auth="Container"
