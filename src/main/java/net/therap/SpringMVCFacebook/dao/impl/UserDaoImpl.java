@@ -68,10 +68,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUser(User user) {
         log.info("UPDATED User " + user.getUserId());
-
-//        User us = entityManager.find(User.class, user.getUserId());
-//        us.getFriends();
-
         entityManager.merge(user);
         entityManager.flush();
     }
